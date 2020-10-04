@@ -13,7 +13,7 @@ func _ready():
 onready var dice = get_node("Dice")
 onready var is_process = get_node("CheckBox")
 
-var speedMax = 0.5
+var speedMax = 0.1
 var speedCur = 0
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -32,9 +32,9 @@ func _process(delta):
 
 func _on_Button_pressed():
 	var diceNew = dice.duplicate()
-	var offsetX = diceNew.texture.get_width() / diceNew.hframes * diceNew.scale.x
+	var offsetX = diceNew.texture.get_width() / (diceNew.hframes - 1) * diceNew.scale.x
 	var offsetY = diceNew.texture.get_height() / diceNew.vframes * diceNew.scale.y
 	print('offsetX: ' + str(offsetX))
 	print('offsetY: ' + str(offsetY))
-	diceNew.translate(Vector2(offsetX,offsetY))
+	diceNew.translate(Vector2(offsetX, offsetY))
 	self.add_child(diceNew)
