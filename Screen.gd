@@ -13,9 +13,11 @@ var field_size_x = 10
 var field_size_y = 10
 var dice_width
 var dice_height
+var diceIndex = 0
 
 var speedMax = 0.1
 var speedCur = 0
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -34,6 +36,8 @@ func _ready():
 
 func duplicate_dice(dice_origin):
 	var dice_new = dice_origin.duplicate()
+	dice_new.name = "Dice" + str(diceIndex)
+	diceIndex += 1
 	self.add_child(dice_new)
 	return dice_new
 	
@@ -59,3 +63,19 @@ func _on_Button_pressed():
 	print('dice_width: ' + str(dice_width))
 	print('dice_height: ' + str(dice_height))
 	dice_new.translate(Vector2(dice_width, dice_height))
+	
+func _input(event):
+	if event is InputEventMouseButton \
+	and event.button_index == BUTTON_LEFT \
+	and not event.is_pressed():
+		print("Mouse Click/Unclick at: ", event.position)
+		print(is_dice_on_screen(event.position))
+
+func is_dice_on_screen(position):
+	var children = self.get_children()
+#	var dices = [dice for dice in self.get_children() if dice is Sprite]
+	print("Local: " + str(to_local(position)))
+	for child in children:
+		print("Rect" + str(child.get_rect()))
+		if child.get_rect().has_point(to_local(position)):
+			return child
