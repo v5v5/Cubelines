@@ -18,6 +18,8 @@ var diceIndex = 0
 var speedMax = 0.1
 var speedCur = 0
 
+var selected_dice
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -69,13 +71,28 @@ func _input(event):
 	and event.button_index == BUTTON_LEFT \
 	and not event.is_pressed():
 		print("Mouse Click/Unclick at: ", event.position)
-		print(is_dice_on_screen(event.position))
+		dice = is_dice_under_mouse(event.position)
+		print(dice)
+		if dice != null:
+			selected_dice = dice
+			return
+		if selected_dice == null:
+			return
+		# TODO selected_dice move to event.position
+		# ...
 
-func is_dice_on_screen(position):
-	var children = self.get_children()
-#	var dices = [dice for dice in self.get_children() if dice is Sprite]
+func is_dice_under_mouse(position):
 	print("Local: " + str(to_local(position)))
+	var children = self.get_children()
+	#var dices = [d for d in self.get_children() if isinstance(d, Sprite)]
 	for child in children:
-		print("Rect" + str(child.get_rect()))
-		if child.get_rect().has_point(to_local(position)):
+		if !(child is Sprite):
+			continue
+		#print("Rect" + str(child.get_rect()))
+		var rect = Rect2(child.position, Vector2(dice_width, dice_height))
+		#if child.get_rect().has_point(to_local(position)):
+		if rect.has_point(to_local(position)):
+			print("Rect" + str(rect))
+			print("Dice with name '" + child.name + "' is selected")
 			return child
+	return null

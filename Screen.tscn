@@ -10,6 +10,7 @@ script = ExtResource( 1 )
 position = Vector2( 17.9756, -74.3574 )
 scale = Vector2( 0.3, 0.3 )
 texture = ExtResource( 2 )
+centered = false
 hframes = 7
 frame = 1
 
